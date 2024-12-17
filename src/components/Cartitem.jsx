@@ -4,10 +4,11 @@ import { useDispatch } from "react-redux";
 import { updateQuantity } from "../redux/slice/CartSlice";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { MdDelete } from "react-icons/md";
+import { remove } from "../redux/slice/CartSlice";
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
-  const { cart } = useSelector((state) => state); 
-
+ 
   const handleQuantityChange = (delta) => {
     const newQuantity = item.quantity + delta;
   
@@ -22,7 +23,14 @@ const CartItem = ({ item }) => {
     }
   
     dispatch(updateQuantity({ id: item.id, delta })); 
+    
   };
+  const removeFromCart = () => {
+    console.log("Removing item with ID:", item.id); // Debug log
+    dispatch(remove(item.id));
+    toast.success("Item Removed");
+  };
+  
   
 
   return (
@@ -64,6 +72,15 @@ const CartItem = ({ item }) => {
               >
                 <MdAdd className="text-gray-800" />
               </button>
+              <div
+              className="w-[30px] h-[30px] rounded-full bg-red-300 flex justify-center items-center
+              hover:scale-125 transition duration-200 ease-in 
+              cursor-pointer
+              "
+              onClick={removeFromCart}
+            >
+              <MdDelete className="text-red-900 " />
+            </div>
             </div>
           </div>
         </div>
